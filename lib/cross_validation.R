@@ -33,7 +33,6 @@ cv.function <- function(dat_train, K, f, lambda){
   return(list(mean_train_rmse = apply(train_rmse, 2, mean), mean_test_rmse = apply(test_rmse, 2, mean),
          sd_train_rmse = apply(train_rmse, 2, sd), sd_test_rmse = apply(test_rmse, 2, sd)))
 }
-<<<<<<< HEAD
 
 cv.function.als <- function(dat_train, K, f, lambda){
   ### Input:
@@ -61,5 +60,3 @@ cv.function.als <- function(dat_train, K, f, lambda){
   return(list(mean_train_rmse = apply(train_rmse, 2, mean), mean_test_rmse = apply(test_rmse, 2, mean),
               sd_train_rmse = apply(train_rmse, 2, sd), sd_test_rmse = apply(test_rmse, 2, sd)))
 }
-=======
->>>>>>> bf92164bd855d16b9bd34e1084be2e5293230c61
