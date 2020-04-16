@@ -196,18 +196,6 @@ save(mat_similarity, file = "../output/similarity.RData")
 load(file = "../output/similarity.RData")
 
 
-# #define a function to extract the corresponding predicted rating for the test set.
-# extract_pred_rating <- function(test_set, pred){
-#   pred_rating <- pred[as.character(test_set[2]), as.character(test_set[1])]
-#   #as.character(test_set[2]) - movie id
-#   #as.character(test_set[1]) - user id
-#   return(pred_rating)
-# }
-# #extract predicted rating
-# str(pred_rating) # pred_rating sequential U and I
-# pred_test_rating <- apply(data_test, 1, extract_pred_rating, pred_rating)
-# 
-
 data_test$pred <- pred_test_rating
 
 #install.packages("FastKNN")
@@ -278,31 +266,7 @@ rmse_ridge
 
 
 ```{r}
-# #install.packages("rdetools")
-# library(rdetools)
-# str(X) #9724*10
-# K=rbfkernel(X)
-# 
-# km=solve(K+lambda*diag(nrow(K)))
-# str(km)
-# 
-# for (i in 1:length(user)){
-#   y=pred_rating[,user[i]] # 9742*1
-#   #str(y) # 1*9724
-#   w=t(X)%*%km%*%y
-#   ridge_pred[,i]=X%*%w
-# }
-# #str(ridge_pred)  # 9724*610
-# rownames(ridge_pred)=levels(as.factor(data$movieId))
-# colnames(ridge_pred)=as.character(1:U)
-# ridge_test <- apply(data_test, 1, extract_pred_rating, ridge_pred)
-# data_test$ridge <- ridge_test
-# 
-# rmse_ridge <- sqrt(mean((data_test$rating - data_test$ridge)^2))
-# rmse_ridge
 
-
-# KRR
 #500frequent movie
 library(tidyverse)
 topnum=500
@@ -314,32 +278,34 @@ top=data%>%
   select(movieId)%>%
   pull(movieId)
 top
-
 ```
 
 ```{r}
+slow.start=proc.time()
+## slow 
 X=scale(result$q,center=F)
 # str(X)
 # rownames(X)
 X=t(X)
 Xtop=X[top,]
-
 user=as.character(1:U)
 KRR_pred=matrix(0,length(unique(data$movieId)),length(user))
 #str(KRR_pred) # 9724* 610
 
-
+K=exp(2*(Xtop%*%t(Xtop)-1)) # topnum*topnum
+left=exp(2*(X%*%t(Xtop)-1))
+b=solve(K+lambda*diag(nrow(K)))
 lambda=1 #tuning parameter
 for (i in 1:length(user)){
   y=pred_rating[top,user[i]] # y--topnum*1 user i's rating for top topnum movie
   # X-- factors for top topnum movies topnum*10
   # xi-- specific movie's factor
-  K=exp(2*(Xtop%*%t(Xtop)-1)) # topnum*topnum
-  a=solve(K+lambda*diag(nrow(K)))%*%y #topnum*1
+  
+  a=b%*%y #topnum*1
   
   # str(beta)
   # str(t(Xtop))
-  left=exp(2*(X%*%t(Xtop)-1))
+  
   KRR_pred[,i]=left%*%a
   
 }
@@ -352,9 +318,7 @@ data_test$KRR <- KRR_test
 rmse_KRR <- sqrt(mean((data_test$rating - data_test$KRR)^2))
 rmse_KRR
 
-
-# install.packages("remotes")
-# remotes::install_github("TimothyKBook/krr")
-# library(krr)
-# r=krr(X,y,lambda=1)
+slow.stop=proc.time()
+timeused=slow.stop-slow.start
+timeused
 ```
