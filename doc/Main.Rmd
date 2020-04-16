@@ -110,10 +110,9 @@ You should visualize training and testing RMSE by different epochs ([One Epoch i
 load(file = "../output/mat_fac_als.RData")
 library(ggplot2)
 
-RMSE <- data.frame(epochs = seq(10, 100, 10), Training_MSE = result$train_RMSE, Test_MSE = result$test_RMSE) %>% gather(key = train_or_test, value = RMSE, -epochs)
+RMSE <- data.frame(epochs = seq(1, 100, 1), Training_MSE = result$train_RMSE, Test_MSE = result$test_RMSE) %>% gather(key = train_or_test, value = RMSE, -epochs)
 
-RMSE %>% drop_na(RMSE) %>% ggplot(aes(x = epochs, y = RMSE,col = train_or_test)) + geom_point() + scale_x_discrete(limits = seq(10, 100, 10)) + xlim(c(0, 100))
-
+RMSE %>% drop_na(RMSE) %>% ggplot(aes(x = epochs, y = RMSE,col = train_or_test)) + geom_point()
 ```
 
 ### Step 3 Postprocessing
