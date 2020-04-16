@@ -288,6 +288,7 @@ X=scale(result$q,center=F)
 # rownames(X)
 X=t(X)
 Xtop=X[top,]
+lambda=1 #tuning parameter
 user=as.character(1:U)
 KRR_pred=matrix(0,length(unique(data$movieId)),length(user))
 #str(KRR_pred) # 9724* 610
@@ -295,7 +296,7 @@ KRR_pred=matrix(0,length(unique(data$movieId)),length(user))
 K=exp(2*(Xtop%*%t(Xtop)-1)) # topnum*topnum
 left=exp(2*(X%*%t(Xtop)-1))
 b=solve(K+lambda*diag(nrow(K)))
-lambda=1 #tuning parameter
+
 for (i in 1:length(user)){
   y=pred_rating[top,user[i]] # y--topnum*1 user i's rating for top topnum movie
   # X-- factors for top topnum movies topnum*10
