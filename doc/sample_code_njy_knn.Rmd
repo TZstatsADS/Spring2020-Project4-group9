@@ -171,15 +171,14 @@ for (i in 1:ncol(result$q)) {
 }
 colnames(m.s) <- colnames(result$q)
 rownames(m.s) <- colnames(result$q)
-```
-```{r}
+
 save(m.s, file = "../output/movie_similarity.RData")
 ```
 
 
 ```{r}
 
-# load("../output/movie_similarity.RData")
+load("../output/movie_similarity.RData")
 
 pred_rating <- t(result$q) %*% result$p
 
@@ -217,7 +216,7 @@ rmse_k
 
 ```{r}
 
-# load("../output/movie_similarity.RData")
+load("../output/movie_similarity.RData")
 
 pred_rating <- t(result$q) %*% result$p
 
@@ -259,7 +258,7 @@ rmse_k
 
 ```{r}
 
-# load("../output/movie_similarity.RData")
+load("../output/movie_similarity.RData")
 
 pred_rating <- t(result$q) %*% result$p
 
