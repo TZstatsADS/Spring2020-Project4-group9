@@ -116,51 +116,7 @@ The postprocessing method used here is SVD with KNN. The referenced papers are:
 P2:[Postprocessing SVD with KNN](./paper/P2 Improving regularized singular value decomposition for collaborative filtering .pdf) Section 3.5
 
 
-
-```{r}
-library(kknn)
-
-pred_rating <- t(result$q) %*% result$p
-
-#define a function to extract the corresponding predicted rating by using KNN for the test set.
-KNN_pred_rating <- function(test_set, pred,K){
-  u <- test_set[1]
-  m <- test_set[2]
-  
-  m_idx <- colnames(result$q) == as.character(m)
-  #u_idx <- colnames(result$p) == as.character(u)
-  Q <- rbind(result$q,as.vector(pred[,as.character(u)]))
-  Q <- t(Q)
-  colnames(Q) <- c((paste("f",c(1:10),sep = "")),"rt_p")
-  Q <- as.data.frame(Q)
-  
-  vm <- Q[m_idx,]
-  V_M <- Q[-m_idx,]
-  
-  k.te <- kknn(rt_p~.,train = V_M,test = vm,k=K,distance = 2,kernel = "cos")
-  
-  
-  pred_rating.um <- k.te$fitted.values
-  return(pred_rating.um)
-}
-
-
-rmse_k <- c()
-
-k <- c(1,2,3,5,10,15,20)
-for (i in 1:length(k)) {
-  pred_test_rating_k <- apply(data_test, 1, KNN_pred_rating, pred_rating,k[i])
-  rmse_k[i] <- sqrt(mean((data_test$rating - pred_test_rating_k)^2))
-  cat("The RMSE of the model using KNN postprocessing method while k = ",
-      k[i]," is", rmse_k[i],"\n")
-}
-rmse_k
-```
-
-
-
-
-
+Firstly, obtain the similarity data matrix and store it in RData file for further usage.
 ```{r}
 
 m.s <- matrix(0,nrow = ncol(result$q), ncol = ncol(result$q))
@@ -176,44 +132,9 @@ save(m.s, file = "../output/movie_similarity.RData")
 ```
 
 
-```{r}
+Define the KNN_pred_rating function that would be used to derive the predicted rating for a given movie ID and user ID by using KNN method and the movie factor matrix obtained above.
 
-load("../output/movie_similarity.RData")
-
-pred_rating <- t(result$q) %*% result$p
-
-#define a function to extract the corresponding predicted rating by using KNN for the test set.
-KNN_pred_rating <- function(test_set, pred,K){
-  u <- test_set[1]
-  m <- test_set[2]
-  
-  
-  mid_ch <- c()
-  for (i in 1:K) {
-    m_idx <- colnames(m.s)[which(m.s[as.character(m),] == sort(m.s[as.character(m),],decreasing = TRUE)[i+1])]
-    mid_ch <- c(mid_ch,m_idx)
-  }
-  
-  pred_rating.um <- pred[mid_ch, as.character(u)]
-  
-  pred_rating <- mean(pred_rating.um)
-  return(pred_rating)
-}
-
-
-rmse_k <- c()
-
-k <- c(1,2,3,5,10,15,20)
-for (i in 1:length(k)) {
-  pred_test_rating_k <- apply(data_test, 1, KNN_pred_rating, pred_rating,k[i])
-  rmse_k[i] <- sqrt(mean((data_test$rating - pred_test_rating_k)^2))
-  cat("The RMSE of the model using KNN postprocessing method while k = ",
-      k[i]," is", rmse_k[i],"\n")
-}
-rmse_k
-```
-
-
+Use partial cross validation method to obtain an optimal k that would minimize the RMSE of the predicted rating by using the training set.
 ```{r}
 
 load("../output/movie_similarity.RData")
@@ -243,48 +164,30 @@ KNN_pred_rating <- function(test_set, pred,K){
 }
 
 
-rmse_k <- c()
+rmse_tr_te_k <- c()
 
-k <- c(1,2,3,5,10,15,20)
+k <- c(1,2,3,5,10,15)
+k_cv <- 5
 for (i in 1:length(k)) {
-  pred_test_rating_k <- apply(data_test, 1, KNN_pred_rating, pred_rating,k[i])
-  rmse_k[i] <- sqrt(mean((data_test$rating - pred_test_rating_k)^2))
-  cat("The RMSE of the model using KNN postprocessing method while k = ",
-      k[i]," is", rmse_k[i],"\n")
+  rmse_tr_te_j <- c()
+  for (j in 1:k_cv) {
+    tr.te.idx <- sample(1:nrow(data_train),0.2*nrow(data_train),replace = TRUE)
+    dt.tr.te <- data_train[tr.te.idx,]
+    pred_tr_te_rating_k <- apply(dt.tr.te, 1, KNN_pred_rating, pred_rating,k[i])
+    rmse_tr_te_j[j] <- sqrt(mean((dt.tr.te$rating - pred_tr_te_rating_k)^2))
+  }
+  rmse_tr_te_k[i] <- mean(rmse_tr_te_j)
+  cat("The RMSE of the model for training cv using KNN postprocessing method while k = ",
+      k[i]," is", rmse_tr_te_k[i],"\n")
 }
-rmse_k
+rmse_tr_te_k
 ```
 
+It turns out that k=5 would minimize the RMSE in predicting the movie ratings while using training set.
+
+Try applying the KNN_pred_rating function on the test set.
 
 ```{r}
-
-load("../output/movie_similarity.RData")
-
-pred_rating <- t(result$q) %*% result$p
-
-#define a function to extract the corresponding predicted rating by using KNN for the test set.
-KNN_pred_rating <- function(test_set, pred,K){
-  u <- test_set[1]
-  m <- test_set[2]
-  
-  m_idx_urated <- unique(data$movieId[which(data$userId == u)])
-  
-  
-  mid_ch <- c()
-  for (i in 1:K) {
-    m_idx <- ifelse(m %in% m_idx_urated,
-                    colnames(m.s)[which(m.s[as.character(m),] == sort(m.s[as.character(m),as.character(m_idx_urated)],decreasing = TRUE)[i+1])],
-                    colnames(m.s)[which(m.s[as.character(m),] == sort(m.s[as.character(m),as.character(m_idx_urated)],decreasing = TRUE)[i])])
-    mid_ch <- c(mid_ch,m_idx)
-  }
-  
-  pred_rating.um <- pred[mid_ch, as.character(u)]
-  pred_rating.um.wgt <- m.s[as.character(m),as.character(mid_ch)]
-  
-  pred_rating <- sum(pred_rating.um.wgt*pred_rating.um)/sum(pred_rating.um.wgt)
-  return(pred_rating)
-}
-
 
 rmse_k <- c()
 
@@ -298,6 +201,7 @@ for (i in 1:length(k)) {
 rmse_k
 ```
 
+The result above shows that k=5 also minimizes the predicted movie rating on test set. Therefore we would choose k=5 as final parameter for KNN postprocessing method.
 
 ```{r}
 tm <- system.time(pred_test_rating <- apply(data_test, 1, KNN_pred_rating, pred_rating,5))
