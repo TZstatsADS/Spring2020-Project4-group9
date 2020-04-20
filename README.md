@@ -30,11 +30,11 @@ RMSE | 0.898 | 0.9477 | 1.4146
 Total Time | 1100.99s | 12.39s | 13.3s
 
 
-**Contribution statement**: [default] All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement.
+**Contribution statement**: All team members approve our work presented in this GitHub repository including this contributions statement.
 + Team members
 	+ Liu, Jiawei:
 	+ Ni, Jiayun:
-	+ Petkun, Michael:
+	+ Petkun, Michael: Made major contributions to the matrix factorization & regularization models, as well as the kernel ridge regression model. Combined the team's code into the Main.Rmd file.
 	+ Wolansky, Ivan:
 	+ Yang, Wenjun:
 
