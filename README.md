@@ -28,7 +28,7 @@ Method | KNN | Linear Kernel | Guassian Kernel
 --- | --- | --- | --- 
 RMSE | 0.898 | 0.9477 | 1.4146 
 --- | --- | --- | --- 
-Train Time | 969.35s for training, 141.64s for prediction| 12.39s | 13.3s
+Total Time | 1100.99s | 12.39s | 13.3s
 </p>
 
 **Contribution statement**: [default] All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement.
