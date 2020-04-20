@@ -23,11 +23,12 @@ Namely, to compare the performance of KNN and KRR based on ALS model with penalt
 
 The KNN model does take more computation time, however, including over 16 minutes for measuring similarities between movies and between 2-3 minutes for making predictions. The kernel ridge regression models, on the other hand, each take less than half a minute to train the model and make predictions.
 
+<p align="center">
 Method | KNN | Linear Kernel | Guassian Kernel 
 --- | --- | --- | --- 
 RMSE | 0.898 | 0.9477 | 1.4146 
---- | --- | --- | --- 
-Train Time | 301 | 283 | 290 | 286 
+Train Time | 969.35s for training, 141.64s for prediction| 12.39s | 13.3s
+</p>
 
 **Contribution statement**: [default] All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement.
 + Team members
