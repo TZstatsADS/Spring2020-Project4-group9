@@ -17,6 +17,7 @@ Term: Spring 2020
 Our goal is to see the difference between the two models:
 + ALS with penalty of magnitudes and postprocessing with KNN
 + ALS with penalty of magnitudes and postprocessing with KRR
+
 Namely, to compare the performance of KNN and KRR based on ALS model with penalty of magnitudes.
 
 **Conclusion**: Given matrix factorization based on Alternating Least Squares with Penalty of Magnitudes, the KNN model outperforms kernel ridge regression for postprocessing (regardless of the choice of Gaussian vs. linear kernel). The KNN model has a test RMSE of 0.8980, while the Gaussian and linear kernel ridge regressions have test RMSE of 1.4146 and 0.9477, respectively.
