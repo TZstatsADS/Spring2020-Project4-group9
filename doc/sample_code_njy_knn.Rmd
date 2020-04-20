@@ -203,6 +203,18 @@ rmse_k
 
 The result above shows that k=5 also minimizes the predicted movie rating on test set. Therefore we would choose k=5 as final parameter for KNN postprocessing method.
 
+
+```{r}
+RMSE.df <- data.frame(k = rep(c(1,2,3,5,10,15),2),
+                      RMSE = c(rmse_tr_te_k,rmse_k),
+                      Train_or_Test = c(rep("Training_RMSE",6),rep("Test_RMSE",6)))
+
+ggplot(RMSE.df) +
+  geom_point(aes(k, RMSE,color = Train_or_Test))
+
+
+```
+
 ```{r}
 tm <- system.time(pred_test_rating <- apply(data_test, 1, KNN_pred_rating, pred_rating,5))
 
