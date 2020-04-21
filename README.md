@@ -35,8 +35,8 @@ Total Time | 1100.99s | 12.39s | 13.3s
 	+ Liu, Jiawei:
 	+ Ni, Jiayun:
 	+ Petkun, Michael: Made major contributions to the matrix factorization & regularization models, as well as the kernel ridge regression model. Combined the team's code into the Main.Rmd file.
-	+ Wolansky, Ivan:
-	+ Yang, Wenjun:
+	+ Wolansky, Ivan: 
+	+ Yang, Wenjun: Wrote the preliminary version of KNN and KRR, and update the README file on github
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
