@@ -74,6 +74,7 @@ rmse %>%
   drop_na(RMSE) %>%
   ggplot(aes(x = epoch, y = RMSE, col = train_test)) + geom_point() + facet_grid(~par)
 ```
+
 ```{r}
 test_rmse <- rep(NA, 4)
 for (i in 1:nrow(f_l)) {
@@ -145,7 +146,6 @@ Define the KNN_pred_rating function that will be used to derive the predicted ra
 
 
 ```{r}
-
 load("../output/movie_similarity.RData")
 load("../output/movie_similarity_time.RData")
 
@@ -222,10 +222,19 @@ Based on cross-validation, it turns out that k=5 would minimize the RMSE in pred
 prediction.time <- system.time(pred_test_rating <- apply(data_test, 1, KNN_pred_rating,
                                                          pred_rating, best_k))
 
-
 data_test$pred_knn <- pred_test_rating
 
-boxplot(data_test$pred_knn ~ data_test$rating)
+# make into factor in order to allow boxplots to recognize rating as discrete and not continuous
+data_test$rating <- as.factor(data_test$rating)
+
+ggplot(data_test, aes(x=rating, y=pred_knn, fill=rating)) + 
+    geom_boxplot() +
+    theme(legend.position="none") +
+    ylab("Predicted Rating") + 
+    xlab("Actual Rating") +
+    scale_fill_brewer(palette="Spectral") +
+    ggtitle("KNN (K = 5) Predicted vs. Actual Ratings")
+
 #calculate RMSE
 rmse <- sqrt(mean((data_test$rating - data_test$pred_knn)^2))
 cat("The RMSE of the model with KNN is", rmse,"\n")
@@ -303,7 +312,13 @@ rmse_KRR_gaussian <- sqrt(mean((data_test$rating - data_test$pred_krr_gaussian)^
 krr.gaussian.stop <- proc.time()
 krr.gaussian.time <- krr.gaussian.stop - krr.gaussian.start
 
-boxplot(data_test$pred_krr_gaussian ~ data_test$rating)
+ggplot(data_test, aes(x=rating, y=pred_krr_gaussian, fill=rating)) + 
+    geom_boxplot() +
+    theme(legend.position="none") +
+    ylab("Predicted Rating") + 
+    xlab("Actual Rating") +
+    scale_fill_brewer(palette="Spectral") +
+    ggtitle("Gaussian Kernel Ridge Regression Predicted vs. Actual Ratings")
 
 cat("The RMSE of the model with Gaussian kernel ridge regression is", rmse_KRR_gaussian,"\n")
 cat("The time for training the model and making predictions is", krr.gaussian.time[1], "s")
@@ -346,7 +361,13 @@ rmse_KRR_linear <- sqrt(mean((data_test$rating - data_test$pred_krr_linear)^2))
 krr.linear.stop <- proc.time()
 krr.linear.time <- krr.linear.stop - krr.linear.start
 
-boxplot(data_test$pred_krr_linear ~ data_test$rating)
+ggplot(data_test, aes(x=rating, y=pred_krr_linear, fill=rating)) + 
+    geom_boxplot() +
+    theme(legend.position="none") +
+    ylab("Predicted Rating") + 
+    xlab("Actual Rating") +
+    scale_fill_brewer(palette="Spectral") +
+    ggtitle("Linear Kernel Ridge Regression Predicted vs. Actual Ratings")
 
 cat("The RMSE of the model with linear kernel ridge regression is", rmse_KRR_linear,"\n")
 cat("The time for training the model and making predictions is", krr.linear.time[1], "s")
