@@ -225,9 +225,9 @@ prediction.time <- system.time(pred_test_rating <- apply(data_test, 1, KNN_pred_
 data_test$pred_knn <- pred_test_rating
 
 # make into factor in order to allow boxplots to recognize rating as discrete and not continuous
-data_test$rating <- as.factor(data_test$rating)
+data_test$rating_graphing <- as.factor(data_test$rating)
 
-ggplot(data_test, aes(x=rating, y=pred_knn, fill=rating)) + 
+ggplot(data_test, aes(x=rating_graphing, y=pred_knn, fill=rating_graphing)) + 
     geom_boxplot() +
     theme(legend.position="none") +
     ylab("Predicted Rating") + 
@@ -312,7 +312,7 @@ rmse_KRR_gaussian <- sqrt(mean((data_test$rating - data_test$pred_krr_gaussian)^
 krr.gaussian.stop <- proc.time()
 krr.gaussian.time <- krr.gaussian.stop - krr.gaussian.start
 
-ggplot(data_test, aes(x=rating, y=pred_krr_gaussian, fill=rating)) + 
+ggplot(data_test, aes(x=rating_graphing, y=pred_krr_gaussian, fill=rating_graphing)) + 
     geom_boxplot() +
     theme(legend.position="none") +
     ylab("Predicted Rating") + 
@@ -361,7 +361,7 @@ rmse_KRR_linear <- sqrt(mean((data_test$rating - data_test$pred_krr_linear)^2))
 krr.linear.stop <- proc.time()
 krr.linear.time <- krr.linear.stop - krr.linear.start
 
-ggplot(data_test, aes(x=rating, y=pred_krr_linear, fill=rating)) + 
+ggplot(data_test, aes(x=rating_graphing, y=pred_krr_linear, fill=rating_graphing)) + 
     geom_boxplot() +
     theme(legend.position="none") +
     ylab("Predicted Rating") + 
