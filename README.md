@@ -33,10 +33,10 @@ Total Time | 1116.56s | 12.27s | 13.14s
 **Contribution statement**: All team members approve our work presented in this GitHub repository including this contributions statement.
 + Team members
 	+ Liu, Jiawei:
-	+ Ni, Jiayun:
+	+ Ni, Jiayun: Responsible for the postprocessing part of KNN method. Prepare for the presentation for the project. Update the README file on github.
 	+ Petkun, Michael: Made major contributions to the matrix factorization & regularization models, as well as the kernel ridge regression model. Combined the team's code into the Main.Rmd file.
 	+ Wolansky, Ivan: 
-	+ Yang, Wenjun: Wrote the preliminary version of KNN and KRR, and update the README file on github
+	+ Yang, Wenjun: Wrote the preliminary version of KNN and KRR, and update the README file on github.
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
