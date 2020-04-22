@@ -33,7 +33,7 @@ Total Time | 1116.56s | 12.27s | 13.14s
 **Contribution statement**: All team members approve our work presented in this GitHub repository including this contributions statement.
 + Team members
 	+ Liu, Jiawei:
-	+ Ni, Jiayun: Responsible for the post-processing part of KNN method. Prepare for the presentation for the project. Update the README file on github.
+	+ Ni, Jiayun: Responsible for the post-processing part of KNN method. Debugged and test the models. Prepare for the presentation for the project. Update the README file on github.
 	+ Petkun, Michael: Made major contributions to the matrix factorization & regularization models, as well as the kernel ridge regression model. Combined the team's code into the Main.Rmd file.
 	+ Wolansky, Ivan: Made some contribution to the matrix factorization & regularization models. Also, experimented with different methods of dealing with the cold-start problem. Additionally, helped prepare the presentation for the project, while making some edits to the README.
 	+ Yang, Wenjun: Wrote the preliminary version of KNN and KRR, and update the README file on github.
