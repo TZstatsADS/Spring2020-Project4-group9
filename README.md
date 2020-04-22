@@ -27,7 +27,7 @@ The KNN model does take more computation time, however, including over 16 minute
 Method | KNN | Linear Kernel | Guassian Kernel 
 --- | --- | --- | --- 
 RMSE | 0.898 | 0.9477 | 1.4146 
-Total Time | 1100.99s | 12.39s | 13.3s
+Total Time | 1116.56s | 12.27s | 13.14s
 
 
 **Contribution statement**: All team members approve our work presented in this GitHub repository including this contributions statement.
